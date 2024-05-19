@@ -37,16 +37,16 @@ public class SportDAO {
         return sport;
     }
 
-    Sport findByName(String name){
-        Sport sport = null;
+    ArrayList<Sport> findByName(String name){
+        ArrayList<Sport> sport = new ArrayList<Sport>();
         try{
             String request;
             request = "SELECT * FROM sport WHERE name LIKE '%" + name + "%' ORDER BY name;";
             PreparedStatement statement = database.prepareStatement(request);
             //System.out.println(request);
             ResultSet result = statement.executeQuery(request);
-            if(result.next()){
-                sport = new Sport(result.getInt("id"), result.getString("name"), result.getInt("required_participants"));
+            while(result.next()){
+                sport.add(new Sport(result.getInt("id"), result.getString("name"), result.getInt("required_participants")));
             }
         }catch(Exception e){
             System.out.println("Error: " + e);
